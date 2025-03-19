@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-import { BlogPostCard } from '@/components/posts/BlogPostCard';
+import { PostCard } from '@/components/posts/PostCard';
 import { FeaturedPost } from '@/components/posts/FeaturedPost';
 import { Button } from '@/components/ui/button';
 
@@ -83,7 +83,7 @@ export default function Home() {
                 <h2 className="mb-8 text-2xl font-bold tracking-tight">Recent Articles</h2>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {recentPosts.map((post) => (
-                        <BlogPostCard key={post.id} post={post} />
+                        <PostCard key={post.id} post={post} />
                     ))}
                 </div>
             </section>
