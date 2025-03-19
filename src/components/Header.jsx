@@ -1,10 +1,15 @@
+'use client'
+
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useAuth } from '@/hooks/auth';
 
 export function Header() {
+    const { user } = useAuth({ middleware: 'guest' })
+
     return (
         <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="container flex h-16 items-center justify-between">
@@ -21,7 +26,7 @@ export function Header() {
                         </SheetContent>
                     </Sheet>
                     <Link href="/" className="text-xl font-bold">
-                        Minimalist Blog
+                        Blog
                     </Link>
                 </div>
                 <nav className="hidden items-center gap-6 md:flex">
@@ -37,15 +42,25 @@ export function Header() {
                 </nav>
                 <div className="flex items-center gap-2">
                     <nav className="flex items-center gap-2">
-                        <Link
-                            href="/login"
-                            className="text-muted-foreground hover:text-primary hidden text-sm font-medium transition-colors md:inline-block"
-                        >
-                            Login
-                        </Link>
-                        <Button asChild variant="default" size="sm" className="hidden md:inline-flex">
-                            <Link href="/register">Sign Up</Link>
-                        </Button>
+                        {user ?
+                            <Link
+                                href="/dashboard"
+                                className="text-muted-foreground hover:text-primary hidden text-sm font-medium transition-colors md:inline-block"
+                            >Dashboard</Link>
+                            : (
+                                <>
+                                    <Link
+                                        href="/login"
+                                        className="text-muted-foreground hover:text-primary hidden text-sm font-medium transition-colors md:inline-block"
+                                    >
+                                        Login
+                                    </Link>
+                                    <Button asChild variant="default" size="sm" className="hidden md:inline-flex">
+                                        <Link href="/register">Sign Up</Link>
+                                    </Button>
+                                </>
+                            )
+                        }
                     </nav>
                 </div>
             </div>
