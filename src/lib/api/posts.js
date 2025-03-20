@@ -13,7 +13,7 @@ export async function getPosts(page = 1, perPage = 20) {
 export async function getPost(slug) {
     try {
         const response = await axios.get(`/api/posts/${slug}`);
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error('Error fetching post:', error);
         throw error;
