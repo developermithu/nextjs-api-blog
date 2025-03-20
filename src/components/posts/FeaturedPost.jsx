@@ -11,11 +11,11 @@ export function FeaturedPost({ post }) {
             <div className="flex flex-col md:flex-row">
                 <div className="relative h-60 w-full md:h-auto md:w-1/2">
                     <Image src={post.coverImage || 'https://placehold.co/1200x600'} alt={post.title} fill className="object-cover" />
-                    <Badge className="absolute top-4 left-4">{post.category}</Badge>
+                    <Badge className="absolute top-4 left-4">{post.category?.name}</Badge>
                 </div>
                 <div className="flex flex-col justify-between p-6 md:w-1/2">
                     <div className="space-y-4">
-                        <Link href={`/blog/${post.id}`} className="hover:underline">
+                        <Link href={`/blog/${post.slug}`} className="hover:underline">
                             <h2 className="text-2xl font-bold tracking-tight md:text-3xl">{post.title}</h2>
                         </Link>
                         <p className="text-muted-foreground">{post.excerpt}</p>
@@ -32,7 +32,7 @@ export function FeaturedPost({ post }) {
                             </div>
                         </div>
                         <Button asChild>
-                            <Link href={`/blog/${post.id}`}>Read More</Link>
+                            <Link href={`/blog/${post.slug}`}>Read More</Link>
                         </Button>
                     </div>
                 </div>

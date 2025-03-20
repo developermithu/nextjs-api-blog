@@ -10,7 +10,7 @@ export function PostCard({ post }) {
     return (
         <Card className="flex h-full flex-col overflow-hidden">
             <div className="relative h-48 w-full">
-                <Link href={`/blog/${post.id}`}>
+                <Link href={`/blog/${post.slug}`}>
                     <Image
                         src={post.coverImage || '/placeholder.svg'}
                         alt={post.title}
@@ -18,10 +18,10 @@ export function PostCard({ post }) {
                         className="object-cover transition-transform hover:scale-105"
                     />
                 </Link>
-                <Badge className="absolute top-4 left-4">{post.category}</Badge>
+                <Badge className="absolute top-4 left-4">{post.category?.name}</Badge>
             </div>
             <CardHeader className="flex-1">
-                <Link href={`/blog/${post.id}`} className="hover:underline">
+                <Link href={`/blog/${post.slug}`} className="hover:underline">
                     <h3 className="text-xl font-bold">{post.title}</h3>
                 </Link>
                 <p className="text-muted-foreground line-clamp-2">{post.excerpt}</p>
