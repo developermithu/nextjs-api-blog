@@ -12,7 +12,7 @@ export function PostCard({ post }) {
             <div className="relative h-48 w-full">
                 <Link href={`/blog/${post.slug}`}>
                     <Image
-                        src={post.coverImage || '/placeholder.svg'}
+                        src={post.cover_image || 'https://placehold.co/1200x600'}
                         alt={post.title}
                         fill
                         className="object-cover transition-transform hover:scale-105"

@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { PostCard } from '@/components/posts/PostCard';
-import { FeaturedPost } from '@/components/posts/FeaturedPost';
+import { PostCard } from '@/app/blog/_components/PostCard';
+import { FeaturedPost } from '@/app/blog/_components/FeaturedPost';
 import { Button } from '@/components/ui/button';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';

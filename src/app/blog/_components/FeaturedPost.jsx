@@ -9,8 +9,8 @@ export function FeaturedPost({ post }) {
     return (
         <div className="bg-card relative overflow-hidden rounded-lg border">
             <div className="flex flex-col md:flex-row">
-                <div className="relative h-60 w-full md:h-auto md:w-1/2">
-                    <Image src={post.coverImage || 'https://placehold.co/1200x600'} alt={post.title} fill className="object-cover" />
+                <div className="relative h-60 lg:h-72 w-full md:h-auto md:w-1/2">
+                    <Image src={post.cover_image || 'https://placehold.co/1200x600'} alt={post.title} fill className="object-cover" />
                     <Badge className="absolute top-4 left-4">{post.category?.name}</Badge>
                 </div>
                 <div className="flex flex-col justify-between p-6 md:w-1/2">

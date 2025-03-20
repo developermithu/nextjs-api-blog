@@ -1,4 +1,4 @@
-import { PostCard } from '@/components/posts/PostCard';
+import { PostCard } from '@/app/blog/_components/PostCard';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { getPosts } from '@/lib/api/posts';
@@ -43,7 +43,7 @@ export default async function BlogPage(props) {
                                         name: post.author.name,
                                         avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author.name)}`,
                                     },
-                                    coverImage: post.cover_image || '/placeholder.svg',
+                                    cover_image: post.cover_image || 'https://placehold.co/1200x600',
                                     category: post.category?.name || 'Uncategorized',
                                 }}
                             />
