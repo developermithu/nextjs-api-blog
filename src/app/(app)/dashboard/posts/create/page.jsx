@@ -225,7 +225,7 @@ export default function CreatePost() {
                             Cancel
                         </Button>
                         <Button type="submit" disabled={loading}>
-                            {loading ? "Creating..." : "Create Post"}
+                            {loading ? "Submitting..." : "Submit"}
                         </Button>
                     </div>
                 </form>

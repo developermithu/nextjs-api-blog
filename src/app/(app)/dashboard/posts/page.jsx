@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { deletePost, getPosts } from '@/services/posts';
-import { MoreHorizontal, Plus } from 'lucide-react';
+import { MoreHorizontal, Pencil, Plus, Trash } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -42,7 +42,7 @@ export default function PostsPage() {
                 <h1 className="text-2xl font-bold">Posts</h1>
                 <Button asChild>
                     <Link href="/dashboard/posts/create">
-                        <Plus className="mr-2 h-4 w-4" />
+                        <Plus className="h-4 w-4" />
                         New Post
                     </Link>
                 </Button>
@@ -100,17 +100,19 @@ export default function PostsPage() {
                                     <TableCell>{post.author?.name}</TableCell>
                                     <TableCell>{post.created_at}</TableCell>
                                     <TableCell>
-                                        <DropdownMenu>
+                                        <DropdownMenu size="md">
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="ghost" className="h-8 w-8 p-0">
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuItem asChild>
+                                                <DropdownMenuItem>
+                                                    <Pencil className="h-4 w-4" />
                                                     <Link href={`/dashboard/posts/${post.slug}/edit`}>Edit</Link>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(post.slug)}>
+                                                    <Trash className="h-4 w-4 text-red-600" />
                                                     Delete
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
@@ -128,16 +130,16 @@ export default function PostsPage() {
                                 Showing {pagination.from} to {pagination.to} of {pagination.total} results
                             </div>
                             <div className="flex space-x-2">
-                                <Button 
-                                    variant="outline" 
+                                <Button
+                                    variant="outline"
                                     size="sm"
                                     disabled={page === 1}
                                     onClick={() => setPage(page - 1)}
                                 >
                                     Previous
                                 </Button>
-                                <Button 
-                                    variant="outline" 
+                                <Button
+                                    variant="outline"
                                     size="sm"
                                     disabled={page >= pagination.last_page}
                                     onClick={() => setPage(page + 1)}

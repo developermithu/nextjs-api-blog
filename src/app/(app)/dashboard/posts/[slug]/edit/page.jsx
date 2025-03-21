@@ -258,7 +258,7 @@ export default function EditPost({ params }) {
                             Cancel
                         </Button>
                         <Button type="submit" disabled={loading}>
-                            {loading ? "Updating..." : "Update Post"}
+                            {loading ? "Saving..." : "Save"}
                         </Button>
                     </div>
                 </form>
