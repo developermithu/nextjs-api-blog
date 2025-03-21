@@ -10,11 +10,16 @@ import { useState } from 'react';
 import PostsTable from './_components/PostsTable';
 import Pagination from './_components/Pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import StatusFilter from './_components/StatusFilter';
 
 export default function PostsPage() {
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('all');
-    const { data, error, isLoading } = useSWR(`/api/posts?page=${page}&filter=${filter}`, getPosts);
+    const [status, setStatus] = useState('');
+    const { data, error, isLoading } = useSWR(
+        `/api/posts?page=${page}&filter=${filter}&status=${status}`,
+        getPosts
+    );
     const posts = data?.data || [];
     const pagination = data?.meta || null;
 
@@ -55,7 +60,7 @@ export default function PostsPage() {
             <div className="mb-6 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <h1 className="text-2xl font-bold">Posts</h1>
-                    <Select value={filter} onValueChange={setFilter}>
+                    <Select defaultValue="all" value={filter} onValueChange={setFilter}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Filter posts" />
                         </SelectTrigger>
@@ -64,6 +69,10 @@ export default function PostsPage() {
                             <SelectItem value="trash">Trash</SelectItem>
                         </SelectContent>
                     </Select>
+                    <StatusFilter 
+                        status={status} 
+                        onStatusChange={setStatus} 
+                    />
                 </div>
                 <Button asChild>
                     <Link href="/dashboard/posts/create">
@@ -77,8 +86,8 @@ export default function PostsPage() {
                 <div className="py-8 text-center">Loading...</div>
             ) : (
                 <>
-                    <PostsTable 
-                        posts={posts} 
+                    <PostsTable
+                        posts={posts}
                         onDelete={handleDelete}
                         onRestore={handleRestore}
                         onForceDelete={handleForceDelete}
