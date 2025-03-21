@@ -1,21 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { getPost, updatePost } from "@/services/posts";
+import { createPost } from "@/services/posts";
 import InputError from "@/components/InputError";
-import { toast } from "sonner";
+
+// Add new imports
+import { useEffect } from "react";
 import { getCategories } from "@/services/categories";
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import TipTapEditor from "@/components/TipTapEditor";
 
-export default function EditPostPage({ params }) {
+export default function CreatePostContent() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState([]);
@@ -32,61 +33,28 @@ export default function EditPostPage({ params }) {
     const [categoryId, setCategoryId] = useState('');
     const [isFeatured, setIsFeatured] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
-    const [existingImage, setExistingImage] = useState(null);
 
-    // Update useEffect to fetch both post and categories
+    // Add useEffect to fetch categories
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchCategories = async () => {
             try {
-                const [postResponse, categoriesResponse] = await Promise.all([
-                    getPost(params.slug),
-                    getCategories()
-                ]);
-
-                if (!postResponse.data) {
-                    throw new Error('Post not found');
-                }
-
-                const post = postResponse.data;
-                setTitle(post.title);
-                setSlug(post.slug);
-                setExcerpt(post.excerpt);
-                setContent(post.content || '');
-                setStatus(post.status);
-                setCategoryId(post.category_id ? post.category_id.toString() : '');
-                setIsFeatured(post.is_featured === 1 || post.is_featured === true);
-                setExistingImage(post.image_url);
-                setCategories(categoriesResponse.data);
-
-
+                const response = await getCategories();
+                setCategories(response.data);
             } catch (error) {
-                console.error('Fetch error:', error);
-                toast.error(error.message || "Failed to fetch data");
-                router.push("/dashboard/posts");
+                console.error('Error fetching categories:', error);
             }
         };
+        fetchCategories();
+    }, []);
 
-        fetchData();
-    }, [params.slug, router]);
-
-    // Add image preview handler
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        setCoverImage(file);
-        if (file) {
-            setImagePreview(URL.createObjectURL(file));
-        }
-    };
-
-    // Update form submission
+    // Update the form data in submitForm
     const submitForm = async event => {
         event.preventDefault();
         setLoading(true);
-        setErrors([]);
+        setErrors([]); // Reset errors
 
         try {
             const formData = new FormData();
-            formData.append('_method', 'PUT');
             formData.append('title', title);
             formData.append('slug', slug || title.toLowerCase().replace(/ /g, '-'));
             formData.append('excerpt', excerpt);
@@ -98,27 +66,34 @@ export default function EditPostPage({ params }) {
                 formData.append('cover_image', coverImage);
             }
 
-            await updatePost(params.slug, formData);
-            toast.success("Post updated successfully");
+            await createPost(formData);
             router.push("/dashboard/posts");
             router.refresh();
         } catch (error) {
             if (error.response?.status === 422) {
-                setErrors(error.response.data.errors || {});
+                setErrors(error.response.data.errors);
             } else {
-                toast.error("Failed to update post");
-                console.error('Update error:', error);
+                console.error('Error creating post:', error);
             }
         } finally {
             setLoading(false);
         }
     };
 
+    // Add image preview handler
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        setCoverImage(file);
+        if (file) {
+            setImagePreview(URL.createObjectURL(file));
+        }
+    };
+
     return (
         <div className="max-w-4xl mx-auto p-6">
             <div className="mb-6">
-                <h1 className="text-2xl font-bold">Edit Post</h1>
-                <p className="text-gray-600 mt-1">Update your blog post details.</p>
+                <h1 className="text-2xl font-bold">Create New Post</h1>
+                <p className="text-gray-600 mt-1">Fill in the details to create a new blog post.</p>
             </div>
 
             <div className="bg-white rounded-lg shadow p-6">
@@ -183,45 +158,37 @@ export default function EditPostPage({ params }) {
                         <InputError messages={errors.status} className="mt-1" />
                     </div>
 
-
-                    <div>
-                        <Label htmlFor="category">Category</Label>
-                        <Select
-                            value={categoryId}
-                            onValueChange={(value) => setCategoryId(value)}
-                        >
-                            <SelectTrigger className="w-full mt-2">
-                                <SelectValue placeholder="Select a category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Categories</SelectLabel>
-                                    {categories.map(category => (
-                                        <SelectItem key={category.id} value={category.id.toString()}>
-                                            {category.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                        <InputError messages={errors.category_id} className="mt-1" />
-                    </div>
-
                     <div>
                         <div>
-                            <div className="flex items-center space-x-2 py-6">
-                                <Checkbox
-                                    id="isFeatured"
-                                    checked={isFeatured}
-                                    onCheckedChange={setIsFeatured}
-                                />
-                                <label
-                                    htmlFor="isFeatured"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Featured Post
-                                </label>
-                            </div>
+                            <Label htmlFor="category">Category</Label>
+                            <select
+                                id="category"
+                                value={categoryId}
+                                className="block mt-2 w-full rounded-md border border-gray-300 p-2"
+                                onChange={event => setCategoryId(event.target.value)}
+                            >
+                                <option value="">Select a category</option>
+                                {categories.map(category => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <InputError messages={errors.category_id} className="mt-1" />
+                        </div>
+
+                        <div className="flex items-center space-x-2 py-6">
+                            <Checkbox
+                                id="isFeatured"
+                                checked={isFeatured}
+                                onCheckedChange={setIsFeatured}
+                            />
+                            <label
+                                htmlFor="isFeatured"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                Featured Post
+                            </label>
                         </div>
 
                         <div>
@@ -233,10 +200,10 @@ export default function EditPostPage({ params }) {
                                 onChange={handleImageChange}
                                 accept="image/*"
                             />
-                            {(imagePreview || existingImage) && (
+                            {imagePreview && (
                                 <div className="mt-2">
                                     <Image
-                                        src={imagePreview || existingImage}
+                                        src={imagePreview}
                                         alt="Preview"
                                         width={200}
                                         height={200}
@@ -258,7 +225,7 @@ export default function EditPostPage({ params }) {
                             Cancel
                         </Button>
                         <Button type="submit" disabled={loading}>
-                            {loading ? "Saving..." : "Save"}
+                            {loading ? "Submitting..." : "Submit"}
                         </Button>
                     </div>
                 </form>
