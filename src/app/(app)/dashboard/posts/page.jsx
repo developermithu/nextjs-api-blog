@@ -9,8 +9,8 @@ import useSWR, { mutate } from 'swr';
 import { useState } from 'react';
 import PostsTable from './_components/PostsTable';
 import Pagination from './_components/Pagination';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import StatusFilter from './_components/StatusFilter';
+import TrashFilter from './_components/TrashFilter';
 
 export default function PostsPage() {
     const [page, setPage] = useState(1);
@@ -60,20 +60,17 @@ export default function PostsPage() {
             <div className="mb-6 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <h1 className="text-2xl font-bold">Posts</h1>
-                    <Select defaultValue="all" value={filter} onValueChange={setFilter}>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Filter posts" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All Posts</SelectItem>
-                            <SelectItem value="trash">Trash</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <StatusFilter 
-                        status={status} 
-                        onStatusChange={setStatus} 
+                    <TrashFilter
+                        filter={filter}
+                        onFilterChange={setFilter}
+                    />
+
+                    <StatusFilter
+                        status={status}
+                        onStatusChange={setStatus}
                     />
                 </div>
+                
                 <Button asChild>
                     <Link href="/dashboard/posts/create">
                         <Plus className="h-4 w-4" />
