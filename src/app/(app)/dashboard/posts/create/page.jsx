@@ -9,11 +9,17 @@ import { Label } from "@/components/ui/label";
 import { createPost } from "@/services/posts";
 import InputError from "@/components/InputError";
 
+// Add new imports
+import { useEffect } from "react";
+import { getCategories } from "@/services/categories";
+import Image from "next/image";
+import { Checkbox } from "@/components/ui/checkbox";
+
 export default function CreatePost() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState([]);
-    
+
     const [title, setTitle] = useState('');
     const [slug, setSlug] = useState('');
     const [excerpt, setExcerpt] = useState('');
@@ -21,6 +27,26 @@ export default function CreatePost() {
     const [status, setStatus] = useState('draft');
     const [coverImage, setCoverImage] = useState(null);
 
+    // Add new state variables
+    const [categories, setCategories] = useState([]);
+    const [categoryId, setCategoryId] = useState('');
+    const [isFeatured, setIsFeatured] = useState(false);
+    const [imagePreview, setImagePreview] = useState(null);
+
+    // Add useEffect to fetch categories
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await getCategories();
+                setCategories(response.data);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+    // Update the form data in submitForm
     const submitForm = async event => {
         event.preventDefault();
         setLoading(true);
@@ -33,6 +59,8 @@ export default function CreatePost() {
             formData.append('excerpt', excerpt);
             formData.append('content', content);
             formData.append('status', status);
+            formData.append('category_id', categoryId);
+            formData.append('is_featured', isFeatured ? '1' : '0'); // Fix boolean value
             if (coverImage) {
                 formData.append('cover_image', coverImage);
             }
@@ -48,6 +76,15 @@ export default function CreatePost() {
             }
         } finally {
             setLoading(false);
+        }
+    };
+
+    // Add image preview handler
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        setCoverImage(file);
+        if (file) {
+            setImagePreview(URL.createObjectURL(file));
         }
     };
 
@@ -113,7 +150,7 @@ export default function CreatePost() {
 
                     <div>
                         <Label htmlFor="status">Status</Label>
-                        <select 
+                        <select
                             id="status"
                             value={status}
                             className="block mt-2 w-full rounded-md border border-gray-300 p-2"
@@ -126,15 +163,61 @@ export default function CreatePost() {
                     </div>
 
                     <div>
-                        <Label htmlFor="coverImage">Cover Image</Label>
-                        <Input
-                            id="coverImage"
-                            type="file"
-                            className="block mt-2 w-full"
-                            onChange={event => setCoverImage(event.target.files[0])}
-                            accept="image/*"
-                        />
-                        <InputError messages={errors.cover_image} className="mt-1" />
+                        <div>
+                            <Label htmlFor="category">Category</Label>
+                            <select
+                                id="category"
+                                value={categoryId}
+                                className="block mt-2 w-full rounded-md border border-gray-300 p-2"
+                                onChange={event => setCategoryId(event.target.value)}
+                            >
+                                <option value="">Select a category</option>
+                                {categories.map(category => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <InputError messages={errors.category_id} className="mt-1" />
+                        </div>
+
+                        <div className="flex items-center space-x-2 py-6">
+                            <Checkbox
+                                id="isFeatured"
+                                checked={isFeatured}
+                                onCheckedChange={setIsFeatured}
+                            />
+                            <label
+                                htmlFor="isFeatured"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                Featured Post
+                            </label>
+                        </div>
+
+                        <div>
+                            <Label htmlFor="coverImage">Cover Image</Label>
+                            <Input
+                                id="coverImage"
+                                type="file"
+                                className="block mt-2 w-full"
+                                onChange={handleImageChange}
+                                accept="image/*"
+                            />
+                            {imagePreview && (
+                                <div className="mt-2">
+                                    <Image
+                                        src={imagePreview}
+                                        alt="Preview"
+                                        width={200}
+                                        height={200}
+                                        className="rounded-md object-cover"
+                                        unoptimized
+                                    />
+                                </div>
+                            )}
+                            <InputError messages={errors.cover_image} className="mt-1" />
+                        </div>
                     </div>
 
                     <div className="flex justify-end space-x-4">
