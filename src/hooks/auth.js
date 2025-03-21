@@ -17,10 +17,13 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .then((res) => res.data)
             .catch((error) => {
                 if (error.response.status !== 409) throw error;
-
                 router.push('/verify-email');
             }),
     );
+
+    // Add role checking utilities
+    const isAdmin = user?.role === 'admin';
+    const isUser = user?.role === 'user';
 
     const csrf = () => axios.get('/sanctum/csrf-cookie');
 
@@ -110,6 +113,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     return {
         user,
+        isAdmin,
+        isUser,
         register,
         login,
         forgotPassword,
