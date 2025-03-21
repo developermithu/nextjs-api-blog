@@ -9,8 +9,8 @@ import { getFeaturedPost, getPosts } from '@/lib/api/posts';
 import Loading from './loading';
 
 export const metadata = {
-    title: 'Blog - Latest Articles',
-    description: 'Discover the latest insights and guides for modern web development.',
+    title: 'Minimalist Blog - Next.js, and Laravel Rest API',
+    description: 'A clean and modern blog built with Next.js, Laravel, and Tailwind CSS',
 };
 
 export default async function Home() {

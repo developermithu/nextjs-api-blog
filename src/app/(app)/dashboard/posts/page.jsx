@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { deletePost, getPosts, restorePost, forceDeletePost } from '@/services/posts';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
+import Head from 'next/head';
 import { toast } from 'sonner';
 import useSWR, { mutate } from 'swr';
 import { useState } from 'react';
@@ -63,47 +64,54 @@ export default function PostsPage() {
     }
 
     return (
-        <div className="p-6">
-            <div className="mb-6 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <h1 className="text-2xl font-bold">Posts</h1>
-                    <TrashFilter
-                        filter={filter}
-                        onFilterChange={setFilter}
-                    />
+        <>
+            <Head>
+                <title>Posts Management - Blog Admin</title>
+                <meta name="description" content="Manage your blog posts - create, edit, delete, and restore posts." />
+            </Head>
 
-                    <StatusFilter
-                        status={status}
-                        onStatusChange={setStatus}
-                    />
+            <div className="p-6">
+                <div className="mb-6 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                        <h1 className="text-2xl font-bold">Posts</h1>
+                        <TrashFilter
+                            filter={filter}
+                            onFilterChange={setFilter}
+                        />
+
+                        <StatusFilter
+                            status={status}
+                            onStatusChange={setStatus}
+                        />
+                    </div>
+
+                    <Button asChild>
+                        <Link href="/dashboard/posts/create">
+                            <Plus className="h-4 w-4" />
+                            New Post
+                        </Link>
+                    </Button>
                 </div>
 
-                <Button asChild>
-                    <Link href="/dashboard/posts/create">
-                        <Plus className="h-4 w-4" />
-                        New Post
-                    </Link>
-                </Button>
+                {isLoading ? (
+                    <div className="py-8 text-center">Loading...</div>
+                ) : (
+                    <>
+                        <PostsTable
+                            posts={posts}
+                            onDelete={handleDelete}
+                            onRestore={handleRestore}
+                            onForceDelete={handleForceDelete}
+                            showTrashed={filter === 'trash'}
+                        />
+                        <Pagination
+                            pagination={pagination}
+                            page={page}
+                            setPage={setPage}
+                        />
+                    </>
+                )}
             </div>
-
-            {isLoading ? (
-                <div className="py-8 text-center">Loading...</div>
-            ) : (
-                <>
-                    <PostsTable
-                        posts={posts}
-                        onDelete={handleDelete}
-                        onRestore={handleRestore}
-                        onForceDelete={handleForceDelete}
-                        showTrashed={filter === 'trash'}
-                    />
-                    <Pagination
-                        pagination={pagination}
-                        page={page}
-                        setPage={setPage}
-                    />
-                </>
-            )}
-        </div>
+        </>
     );
 }

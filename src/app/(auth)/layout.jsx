@@ -1,6 +1,14 @@
 import AppLogo from "@/components/AppLogo";
 import { Header } from "@/components/Header";
 
+export const metadata = {
+    title: {
+        template: '%s - Minimalist Blog',
+        default: 'Authentication - Minimalist Blog',
+    },
+    description: 'Secure authentication portal for Minimalist Blog platform',
+}
+
 export default function AuthLayout({ children }) {
     return (
         <>

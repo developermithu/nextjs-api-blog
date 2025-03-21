@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
     const post = await getPost(slug);
 
     return {
-        title: `${post.title} | Blog`,
+        title: `${post.title} - Blog`,
         description: post.excerpt || post.content.substring(0, 160),
         openGraph: {
             title: post.title,
