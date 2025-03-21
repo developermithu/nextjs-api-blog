@@ -13,8 +13,7 @@ import { getCategories } from "@/services/categories";
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-// Add new imports similar to create page
+import TipTapEditor from "@/components/TipTapEditor";
 
 export default function EditPost({ params }) {
     const router = useRouter();
@@ -36,7 +35,6 @@ export default function EditPost({ params }) {
     const [existingImage, setExistingImage] = useState(null);
 
     // Update useEffect to fetch both post and categories
-    // In the useEffect where we set post data
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -53,15 +51,14 @@ export default function EditPost({ params }) {
                 setTitle(post.title);
                 setSlug(post.slug);
                 setExcerpt(post.excerpt);
-                setContent(post.content);
+                setContent(post.content || '');
                 setStatus(post.status);
-                // Make sure to convert category_id to string
                 setCategoryId(post.category_id ? post.category_id.toString() : '');
                 setIsFeatured(post.is_featured === 1 || post.is_featured === true);
                 setExistingImage(post.image_url);
                 setCategories(categoriesResponse.data);
 
-                console.log("Post category ID:", post.category_id, typeof post.category_id);
+
             } catch (error) {
                 console.error('Fetch error:', error);
                 toast.error(error.message || "Failed to fetch data");
@@ -71,7 +68,6 @@ export default function EditPost({ params }) {
 
         fetchData();
     }, [params.slug, router]);
-
 
     // Add image preview handler
     const handleImageChange = (event) => {
@@ -167,14 +163,9 @@ export default function EditPost({ params }) {
 
                     <div>
                         <Label htmlFor="content">Content</Label>
-                        <Textarea
-                            id="content"
-                            value={content}
-                            className="block mt-2 w-full"
-                            rows={10}
-                            onChange={event => setContent(event.target.value)}
-                            required
-                        />
+                        <div className="mt-2">
+                            <TipTapEditor content={content} onChange={setContent} />
+                        </div>
                         <InputError messages={errors.content} className="mt-1" />
                     </div>
 

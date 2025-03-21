@@ -70,7 +70,7 @@ export default async function PostPage({ params }) {
                         </div>
 
                         <div
-                            className="prose prose-gray dark:prose-invert max-w-none mb-10"
+                            className="prose prose-lg dark:prose-invert max-w-none mb-10"
                             dangerouslySetInnerHTML={{ __html: post.content }}
                         />
 

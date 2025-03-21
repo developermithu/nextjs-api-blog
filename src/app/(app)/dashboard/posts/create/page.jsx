@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { getCategories } from "@/services/categories";
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
+import TipTapEditor from "@/components/TipTapEditor";
 
 export default function CreatePost() {
     const router = useRouter();
@@ -137,14 +138,9 @@ export default function CreatePost() {
 
                     <div>
                         <Label htmlFor="content">Content</Label>
-                        <Textarea
-                            id="content"
-                            value={content}
-                            className="block mt-2 w-full"
-                            rows={10}
-                            onChange={event => setContent(event.target.value)}
-                            required
-                        />
+                        <div className="mt-2">
+                            <TipTapEditor content={content} onChange={setContent} />
+                        </div>
                         <InputError messages={errors.content} className="mt-1" />
                     </div>
 
