@@ -11,8 +11,11 @@ import PostsTable from './_components/PostsTable';
 import Pagination from './_components/Pagination';
 import StatusFilter from './_components/StatusFilter';
 import TrashFilter from './_components/TrashFilter';
+import { useAuth } from '@/hooks/auth';
+import { redirect } from 'next/navigation';
 
 export default function PostsPage() {
+    const { isAdmin } = useAuth();
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('all');
     const [status, setStatus] = useState('');
@@ -55,6 +58,10 @@ export default function PostsPage() {
         }
     };
 
+    if (!isAdmin) {
+        redirect('/dashboard');
+    }
+
     return (
         <div className="p-6">
             <div className="mb-6 flex items-center justify-between">
@@ -70,7 +77,7 @@ export default function PostsPage() {
                         onStatusChange={setStatus}
                     />
                 </div>
-                
+
                 <Button asChild>
                     <Link href="/dashboard/posts/create">
                         <Plus className="h-4 w-4" />

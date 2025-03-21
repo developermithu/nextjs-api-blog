@@ -8,7 +8,7 @@ import { DropdownButton } from './DropdownLink'
 import Link from 'next/link'
 import AppLogo from '@/components/AppLogo'
 
-const Navigation = ({ user }) => {
+const Navigation = ({ user, isAdmin }) => {
     const { logout } = useAuth()
 
     const [open, setOpen] = useState(false)
@@ -34,11 +34,13 @@ const Navigation = ({ user }) => {
                                 Dashboard
                             </NavLink>
 
-                            <NavLink
-                                href="/dashboard/posts"
-                                active={usePathname() === '/dashboard/posts'}>
-                                Posts
-                            </NavLink>
+                            {isAdmin && (
+                                <NavLink
+                                    href="/dashboard/posts"
+                                    active={usePathname() === '/dashboard/posts'}>
+                                    Posts
+                                </NavLink>
+                            )}
                         </div>
                     </div>
 
@@ -115,11 +117,13 @@ const Navigation = ({ user }) => {
                             Dashboard
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink
-                            href="/dashboard/posts"
-                            active={usePathname() === '/dashboard/posts'}>
-                            Posts
-                        </ResponsiveNavLink>
+                        {isAdmin && (
+                            <ResponsiveNavLink
+                                href="/dashboard/posts"
+                                active={usePathname() === '/dashboard/posts'}>
+                                Posts
+                            </ResponsiveNavLink>
+                        )}
                     </div>
 
                     {/* Responsive Settings Options */}
