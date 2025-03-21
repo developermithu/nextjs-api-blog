@@ -20,31 +20,36 @@ A minimalist seo friendly blog application built with **Next.js** and **Laravel 
 ## Installation
 
 1. Clone the repository:
+   
 ```bash
 git clone https://github.com/developermithu/nextjs-api-blog.git
 cd nextjs-api-blog
 ```
 
-1. Install dependencies:
+2. Install dependencies:
+   
 ```bash
 npm install or bun install
 ```
 
-1. Create a `.env.local` file in the root directory and add the following content:
+3. Create a `.env.local` file in the root directory and add the following content:
+   
 ```bash
 NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 ```
 
-1. Start the development server:
+4. Start the development server:
+   
 ```bash
 npm run dev or bun dev
 ```
 
-1. Open `http://localhost:3000` in your browser to view the application.
+5. Open `http://localhost:3000` in your browser to view the application.
 
 
 ## Project Structure
 
+```
 nextjs-api-blog/
 ├── src/
 │   ├── app/           # Next.js app router pages
@@ -53,6 +58,7 @@ nextjs-api-blog/
 │   ├── lib/          # Utilities and configurations
 │   ├── services/     # API service functions
 │   └── styles/       # Global styles
+```
 
 ## Authentication
 
