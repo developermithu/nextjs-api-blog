@@ -3,6 +3,7 @@
 import { useAuth } from '@/hooks/auth'
 import Navigation from './_components/Navigation'
 import Loading from './_components/Loading'
+import { Toaster } from '@/components/ui/sonner'
 
 const AppLayout = ({ children }) => {
     const { user } = useAuth({ middleware: 'auth' })
@@ -16,6 +17,8 @@ const AppLayout = ({ children }) => {
             <Navigation user={user} />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
+
+            <Toaster richColors theme="light" />
         </div>
     )
 }

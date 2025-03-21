@@ -33,6 +33,12 @@ const Navigation = ({ user }) => {
                                 active={usePathname() === '/dashboard'}>
                                 Dashboard
                             </NavLink>
+
+                            <NavLink
+                                href="/dashboard/posts"
+                                active={usePathname() === '/dashboard/posts'}>
+                                Posts
+                            </NavLink>
                         </div>
                     </div>
 
@@ -107,6 +113,12 @@ const Navigation = ({ user }) => {
                             href="/dashboard"
                             active={usePathname() === '/dashboard'}>
                             Dashboard
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            href="/dashboard/posts"
+                            active={usePathname() === '/dashboard/posts'}>
+                            Posts
                         </ResponsiveNavLink>
                     </div>
 
