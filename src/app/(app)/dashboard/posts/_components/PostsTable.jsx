@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MoreHorizontal, Pencil, Trash } from "lucide-react";
+import { ArrowUpCircle, MoreHorizontal, Pencil, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function PostsTable({ posts, onDelete }) {
+export default function PostsTable({ posts, onDelete, onRestore, onForceDelete, showTrashed }) {
     return (
         <Table>
             <TableHeader>
@@ -21,7 +21,7 @@ export default function PostsTable({ posts, onDelete }) {
             </TableHeader>
             <TableBody>
                 {posts.map((post) => (
-                    <TableRow key={post.id}>
+                    <TableRow key={post.id} className={showTrashed ? 'bg-gray-50' : ''}>
                         <TableCell className="font-medium">
                             <Link href={`/dashboard/posts/${post.id}`} className="hover:underline">
                                 {post.title}
@@ -58,24 +58,44 @@ export default function PostsTable({ posts, onDelete }) {
                         <TableCell>{post.author?.name}</TableCell>
                         <TableCell>{post.created_at}</TableCell>
                         <TableCell>
-                            <DropdownMenu size="md">
+                            <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" className="h-8 w-8 p-0">
                                         <MoreHorizontal className="h-4 w-4" />
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
-                                    <DropdownMenuItem>
-                                        <Pencil className="h-4 w-4" />
-                                        <Link href={`/dashboard/posts/${post.slug}/edit`}>Edit</Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem 
-                                        className="text-red-600" 
-                                        onClick={() => onDelete(post.slug)}
-                                    >
-                                        <Trash className="h-4 w-4 text-red-600" />
-                                        Delete
-                                    </DropdownMenuItem>
+                                    {showTrashed ? (
+                                        <>
+                                            <DropdownMenuItem onClick={() => onRestore(post.id)}>
+                                                <ArrowUpCircle className="h-4 w-4 mr-2" />
+                                                Restore
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem 
+                                                className="text-red-600"
+                                                onClick={() => onForceDelete(post.id)}
+                                            >
+                                                <Trash className="h-4 w-4 mr-2" />
+                                                Delete Permanently
+                                            </DropdownMenuItem>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <DropdownMenuItem>
+                                                <Pencil className="h-4 w-4 mr-2" />
+                                                <Link href={`/dashboard/posts/${post.slug}/edit`}>
+                                                    Edit
+                                                </Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem 
+                                                className="text-red-600"
+                                                onClick={() => onDelete(post.slug)}
+                                            >
+                                                <Trash className="h-4 w-4 mr-2" />
+                                                Move to Trash
+                                            </DropdownMenuItem>
+                                        </>
+                                    )}
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </TableCell>

@@ -33,3 +33,13 @@ export const deletePost = async (slug) => {
     const response = await axios.delete(`/api/posts/${slug}`);
     return response.data;
 };
+
+export const restorePost = async (id) => {
+    const response = await axios.post(`/api/posts/${id}/restore`);
+    return response.data;
+};
+
+export const forceDeletePost = async (id) => {
+    const response = await axios.delete(`/api/posts/${id}/force-delete`);
+    return response.data;
+};
