@@ -1,7 +1,7 @@
 import axios from '@/lib/axios';
 
-export const getPosts = async () => {
-    const response = await axios.get('/api/posts');
+export const getPosts = async (url) => {
+    const response = await axios.get(url);
     return response.data;
 };
 
