@@ -20,9 +20,9 @@ export async function generateMetadata({ params }) {
             type: 'article',
             publishedTime: post.created_at,
             authors: [post.author?.name],
-            images: post.cover_image ? [
+            images: post.image_url ? [
                 {
-                    url: post.cover_image,
+                    url: post.image_url,
                     width: 1200,
                     height: 630,
                     alt: post.title,
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }) {
             card: 'summary_large_image',
             title: post.title,
             description: post.excerpt || post.content.substring(0, 160),
-            images: post.cover_image ? [post.cover_image] : [],
+            images: post.image_url ? [post.image_url] : [],
         },
     };
 }
@@ -66,7 +66,7 @@ export default async function PostPage({ params }) {
                         </div>
 
                         <div className="relative aspect-video mb-10 overflow-hidden rounded-lg">
-                            <Image src={post.cover_image || "https://placehold.co/1200x600"} alt={post.title} fill className="object-cover"  />
+                            <Image src={post.image_url || "https://placehold.co/1200x600"} alt={post.title} fill className="object-cover" />
                         </div>
 
                         <div
