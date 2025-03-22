@@ -60,7 +60,7 @@ export default async function PostPage({ params }) {
                                 </div>
                                 <div className="flex items-center">
                                     <Clock className="mr-1 h-4 w-4" />
-                                    5 min reads time
+                                    {post.reading_time_in_min} min reads time
                                 </div>
                             </div>
                         </div>
@@ -77,7 +77,7 @@ export default async function PostPage({ params }) {
                         <div className="border-t pt-8">
                             <div className="flex items-center gap-4">
                                 <Avatar className="h-12 w-12">
-                                    <AvatarImage src={post.author?.avatar} alt={post.author?.name} />
+                                    <AvatarImage src={post.author?.avatar_url} alt={post.author?.name} />
                                     <AvatarFallback>{post.author?.name.charAt(0)}</AvatarFallback>
                                 </Avatar>
                                 <div>

@@ -29,14 +29,14 @@ export function PostCard({ post }) {
             <CardFooter className="flex items-center justify-between border-t pt-4">
                 <div className="flex items-center space-x-2">
                     <Avatar className="h-8 w-8">
-                        <AvatarImage src={post.author.avatar} alt={post.author.name} />
+                        <AvatarImage src={post.author.avatar_url} alt={post.author.name} />
                         <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <span className="text-muted-foreground text-sm">{post.author.name}</span>
                 </div>
                 <div className="text-muted-foreground flex items-center text-sm">
                     <Calendar className="mr-1 h-3 w-3" />
-                    {post.date}
+                    {post.created_at}
                 </div>
             </CardFooter>
         </Card>

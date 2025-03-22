@@ -27,26 +27,7 @@ export default async function BlogPage(props) {
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {postsResponse.data.map((post) => (
-                            <PostCard
-                                key={post.id}
-                                post={{
-                                    id: post.id,
-                                    title: post.title,
-                                    slug: post.slug,
-                                    excerpt: post.excerpt,
-                                    date: new Date(post.created_at).toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric',
-                                    }),
-                                    author: {
-                                        name: post.author.name,
-                                        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author.name)}`,
-                                    },
-                                    cover_image: post.cover_image || 'https://placehold.co/1200x600',
-                                    category: post.category?.name || 'Uncategorized',
-                                }}
-                            />
+                            <PostCard key={post.id} post={post} />
                         ))}
                     </div>
 
