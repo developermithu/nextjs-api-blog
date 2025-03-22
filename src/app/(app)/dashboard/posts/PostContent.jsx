@@ -19,7 +19,8 @@ export default function PostContent() {
     const { isAdmin } = useAuth();
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('all');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('all'); 
+
     const { data, error, isLoading } = useSWR(
         `/api/posts?page=${page}&filter=${filter}&status=${status}`,
         getPosts
@@ -31,7 +32,7 @@ export default function PostContent() {
         if (!confirm('Are you sure you want to delete this post?')) return;
         try {
             await deletePost(slug);
-            mutate(`/api/posts?page=${page}&filter=${filter}`);
+            mutate(`/api/posts?page=${page}&filter=${filter}&status=${status}`);
             toast.success('Post deleted successfully!');
         } catch (error) {
             toast.error('Something went wrong!');
@@ -41,7 +42,7 @@ export default function PostContent() {
     const handleRestore = async (id) => {
         try {
             await restorePost(id);
-            mutate(`/api/posts?page=${page}&filter=${filter}`);
+            mutate(`/api/posts?page=${page}&filter=${filter}&status=${status}`);
             toast.success('Post restored successfully!');
         } catch (error) {
             toast.error('Failed to restore post');
@@ -52,7 +53,7 @@ export default function PostContent() {
         if (!confirm('This action cannot be undone. Are you sure?')) return;
         try {
             await forceDeletePost(id);
-            mutate(`/api/posts?page=${page}&filter=${filter}`);
+            mutate(`/api/posts?page=${page}&filter=${filter}&status=${status}`);
             toast.success('Post permanently deleted!');
         } catch (error) {
             toast.error('Failed to delete post');

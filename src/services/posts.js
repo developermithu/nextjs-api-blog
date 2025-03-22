@@ -1,9 +1,7 @@
 import axios from '@/lib/axios';
 
 export const getPosts = async (url) => {
-    const separator = url.includes('?') ? '&' : '?';
-    const finalUrl = `${url}${separator}status=published`;
-    const response = await axios.get(finalUrl);
+    const response = await axios.get(url);
     return response.data;
 };
 

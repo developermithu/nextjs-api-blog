@@ -4,13 +4,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export default function TrashFilter({ filter, onFilterChange }) {
     return (
-        <Select defaultValue="all" value={filter} onValueChange={onFilterChange}>
-            <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter posts" />
+        <Select value={filter} onValueChange={onFilterChange}>
+            <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
                 <SelectItem value="all">All Posts</SelectItem>
-                <SelectItem value="trash">Trash</SelectItem>
+                <SelectItem value="trash">Trashed</SelectItem>
+                <SelectItem value="with_trashed">All Including Trashed</SelectItem>
             </SelectContent>
         </Select>
     );
