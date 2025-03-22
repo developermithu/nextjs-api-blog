@@ -16,6 +16,16 @@ import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
 import TipTapEditor from "@/components/TipTapEditor";
 
+import { 
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue 
+} from "@/components/ui/select";
+
 export default function CreatePostContent() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -61,7 +71,7 @@ export default function CreatePostContent() {
             formData.append('content', content);
             formData.append('status', status);
             formData.append('category_id', categoryId);
-            formData.append('is_featured', isFeatured ? '1' : '0'); // Fix boolean value
+            formData.append('is_featured', isFeatured ? '1' : '0'); 
             if (coverImage) {
                 formData.append('cover_image', coverImage);
             }
@@ -90,146 +100,159 @@ export default function CreatePostContent() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-6">
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold">Create New Post</h1>
-                <p className="text-gray-600 mt-1">Fill in the details to create a new blog post.</p>
+        <div className="p-6">
+            <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold">Create New Post</h1>
+                    <p className="text-muted-foreground">Fill in the details to create a new blog post.</p>
+                </div>
+
+                <div className="flex items-center space-x-4">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => router.push("/dashboard/posts")}
+                    >
+                        Cancel
+                    </Button>
+                    <Button type="submit" disabled={loading} form="post-form">
+                        {loading ? "Submitting..." : "Create Post"}
+                    </Button>
+                </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow p-6">
-                <form onSubmit={submitForm} className="space-y-6">
-                    <div>
-                        <Label htmlFor="title">Title</Label>
-                        <Input
-                            id="title"
-                            type="text"
-                            value={title}
-                            className="block mt-2 w-full"
-                            onChange={event => setTitle(event.target.value)}
-                            required
-                        />
-                        <InputError messages={errors.title} className="mt-1" />
-                    </div>
-
-                    <div>
-                        <Label htmlFor="slug">Slug</Label>
-                        <Input
-                            id="slug"
-                            type="text"
-                            value={slug}
-                            className="block mt-2 w-full"
-                            onChange={event => setSlug(event.target.value)}
-                        />
-                        <InputError messages={errors.slug} className="mt-1" />
-                    </div>
-
-                    <div>
-                        <Label htmlFor="excerpt">Excerpt</Label>
-                        <Textarea
-                            id="excerpt"
-                            value={excerpt}
-                            className="block mt-2 w-full"
-                            rows={3}
-                            onChange={event => setExcerpt(event.target.value)}
-                            required
-                        />
-                        <InputError messages={errors.excerpt} className="mt-1" />
-                    </div>
-
-                    <div>
-                        <Label htmlFor="content">Content</Label>
-                        <div className="mt-2">
-                            <TipTapEditor content={content} onChange={setContent} />
-                        </div>
-                        <InputError messages={errors.content} className="mt-1" />
-                    </div>
-
-                    <div>
-                        <Label htmlFor="status">Status</Label>
-                        <select
-                            id="status"
-                            value={status}
-                            className="block mt-2 w-full rounded-md border border-gray-300 p-2"
-                            onChange={event => setStatus(event.target.value)}
-                        >
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
-                        </select>
-                        <InputError messages={errors.status} className="mt-1" />
-                    </div>
-
-                    <div>
-                        <div>
-                            <Label htmlFor="category">Category</Label>
-                            <select
-                                id="category"
-                                value={categoryId}
-                                className="block mt-2 w-full rounded-md border border-gray-300 p-2"
-                                onChange={event => setCategoryId(event.target.value)}
-                            >
-                                <option value="">Select a category</option>
-                                {categories.map(category => (
-                                    <option key={category.id} value={category.id}>
-                                        {category.name}
-                                    </option>
-                                ))}
-                            </select>
-                            <InputError messages={errors.category_id} className="mt-1" />
-                        </div>
-
-                        <div className="flex items-center space-x-2 py-6">
-                            <Checkbox
-                                id="isFeatured"
-                                checked={isFeatured}
-                                onCheckedChange={setIsFeatured}
-                            />
-                            <label
-                                htmlFor="isFeatured"
-                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            >
-                                Featured Post
-                            </label>
-                        </div>
-
-                        <div>
-                            <Label htmlFor="coverImage">Cover Image</Label>
-                            <Input
-                                id="coverImage"
-                                type="file"
-                                className="block mt-2 w-full"
-                                onChange={handleImageChange}
-                                accept="image/*"
-                            />
-                            {imagePreview && (
-                                <div className="mt-2">
-                                    <Image
-                                        src={imagePreview}
-                                        alt="Preview"
-                                        width={200}
-                                        height={200}
-                                        className="rounded-md object-cover"
-                                        unoptimized
+            <form id="post-form" onSubmit={submitForm}>
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    {/* Left Form */}
+                    <div className="space-y-6 lg:col-span-2">
+                        <div className="rounded-lg border bg-card p-6">
+                            <div className="space-y-6">
+                                <div>
+                                    <Label htmlFor="title">Title</Label>
+                                    <Input
+                                        id="title"
+                                        type="text"
+                                        value={title}
+                                        className="mt-2"
+                                        onChange={event => setTitle(event.target.value)}
+                                        required
                                     />
+                                    <InputError messages={errors.title} className="mt-1" />
                                 </div>
-                            )}
-                            <InputError messages={errors.cover_image} className="mt-1" />
+
+                                <div>
+                                    <Label htmlFor="slug">Slug</Label>
+                                    <Input
+                                        id="slug"
+                                        type="text"
+                                        value={slug}
+                                        className="mt-2"
+                                        onChange={event => setSlug(event.target.value)}
+                                    />
+                                    <InputError messages={errors.slug} className="mt-1" />
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="excerpt">Excerpt</Label>
+                                    <Textarea
+                                        id="excerpt"
+                                        value={excerpt}
+                                        className="mt-2"
+                                        rows={3}
+                                        onChange={event => setExcerpt(event.target.value)}
+                                        required
+                                    />
+                                    <InputError messages={errors.excerpt} className="mt-1" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="rounded-lg border bg-card p-6">
+                            <Label htmlFor="content">Content</Label>
+                            <div className="mt-2">
+                                <TipTapEditor content={content} onChange={setContent} />
+                            </div>
+                            <InputError messages={errors.content} className="mt-1" />
                         </div>
                     </div>
 
-                    <div className="flex justify-end space-x-4">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => router.push("/dashboard/posts")}
-                        >
-                            Cancel
-                        </Button>
-                        <Button type="submit" disabled={loading}>
-                            {loading ? "Submitting..." : "Submit"}
-                        </Button>
-                    </div>
-                </form>
-            </div>
+                    {/* Right Form */}
+                    <aside className="space-y-6">
+                        <div className="rounded-lg border bg-card p-6">
+                            <h3 className="mb-4 text-lg font-medium">Publishing Options</h3>
+                            <div className="space-y-4">
+                                    <div>
+                                        <Label htmlFor="status">Status</Label>
+                                        <Select value={status} onValueChange={setStatus}>
+                                            <SelectTrigger className="mt-2 w-full">
+                                                <SelectValue placeholder="Select status" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="draft">Draft</SelectItem>
+                                                <SelectItem value="published">Published</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <InputError messages={errors.status} className="mt-1" />
+                                    </div>
+
+                                <div>
+                                    <Label htmlFor="category">Category</Label>
+                                    <Select value={categoryId} onValueChange={setCategoryId}>
+                                        <SelectTrigger className="mt-2 w-full">
+                                            <SelectValue placeholder="Select a category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Categories</SelectLabel>
+                                                {categories.map(category => (
+                                                    <SelectItem key={category.id} value={category.id.toString()}>
+                                                        {category.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError messages={errors.category_id} className="mt-1" />
+                                </div>
+
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="isFeatured"
+                                        checked={isFeatured}
+                                        onCheckedChange={setIsFeatured}
+                                    />
+                                    <Label htmlFor="isFeatured">Featured Post</Label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="rounded-lg border bg-card p-6">
+                            <h3 className="mb-4 text-lg font-medium">Cover Image</h3>
+                            <div className="space-y-4">
+                                <Input
+                                    id="coverImage"
+                                    type="file"
+                                    onChange={handleImageChange}
+                                    accept="image/*"
+                                />
+                                {imagePreview && (
+                                    <div className="mt-2 overflow-hidden rounded-md border">
+                                        <Image
+                                            src={imagePreview}
+                                            alt="Preview"
+                                            width={400}
+                                            height={200}
+                                            className="h-[200px] w-full object-cover"
+                                            unoptimized
+                                        />
+                                    </div>
+                                )}
+                                <InputError messages={errors.cover_image} className="mt-1" />
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </form>
         </div>
     );
 }

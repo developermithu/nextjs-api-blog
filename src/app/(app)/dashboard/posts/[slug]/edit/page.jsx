@@ -115,154 +115,158 @@ export default function EditPostPage({ params }) {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-6">
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold">Edit Post</h1>
-                <p className="text-gray-600 mt-1">Update your blog post details.</p>
+        <div className="p-6">
+            <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold">Edit Post</h1>
+                    <p className="text-muted-foreground">Update your blog post details.</p>
+                </div>
+                <div className="flex items-center space-x-4">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => router.push("/dashboard/posts")}
+                    >
+                        Cancel
+                    </Button>
+                    <Button type="submit" disabled={loading} form="post-form">
+                        {loading ? "Saving..." : "Save Changes"}
+                    </Button>
+                </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow p-6">
-                <form onSubmit={submitForm} className="space-y-6">
-                    <div>
-                        <Label htmlFor="title">Title</Label>
-                        <Input
-                            id="title"
-                            type="text"
-                            value={title}
-                            className="block mt-2 w-full"
-                            onChange={event => setTitle(event.target.value)}
-                            required
-                        />
-                        <InputError messages={errors.title} className="mt-1" />
-                    </div>
+            <form id="post-form" onSubmit={submitForm}>
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    {/* Main Content - Takes 2 columns */}
+                    <div className="space-y-6 lg:col-span-2">
+                        <div className="rounded-lg border bg-card p-6">
+                            <div className="space-y-6">
+                                <div>
+                                    <Label htmlFor="title">Title</Label>
+                                    <Input
+                                        id="title"
+                                        type="text"
+                                        value={title}
+                                        className="mt-2"
+                                        onChange={event => setTitle(event.target.value)}
+                                        required
+                                    />
+                                    <InputError messages={errors.title} className="mt-1" />
+                                </div>
 
-                    <div>
-                        <Label htmlFor="slug">Slug</Label>
-                        <Input
-                            id="slug"
-                            type="text"
-                            value={slug}
-                            className="block mt-2 w-full"
-                            onChange={event => setSlug(event.target.value)}
-                        />
-                        <InputError messages={errors.slug} className="mt-1" />
-                    </div>
+                                <div>
+                                    <Label htmlFor="slug">Slug</Label>
+                                    <Input
+                                        id="slug"
+                                        type="text"
+                                        value={slug}
+                                        className="mt-2"
+                                        onChange={event => setSlug(event.target.value)}
+                                    />
+                                    <InputError messages={errors.slug} className="mt-1" />
+                                </div>
 
-                    <div>
-                        <Label htmlFor="excerpt">Excerpt</Label>
-                        <Textarea
-                            id="excerpt"
-                            value={excerpt}
-                            className="block mt-2 w-full"
-                            rows={3}
-                            onChange={event => setExcerpt(event.target.value)}
-                            required
-                        />
-                        <InputError messages={errors.excerpt} className="mt-1" />
-                    </div>
-
-                    <div>
-                        <Label htmlFor="content">Content</Label>
-                        <div className="mt-2">
-                            <TipTapEditor content={content} onChange={setContent} />
-                        </div>
-                        <InputError messages={errors.content} className="mt-1" />
-                    </div>
-
-                    <div>
-                        <Label htmlFor="status">Status</Label>
-                        <select
-                            id="status"
-                            value={status}
-                            className="block mt-2 w-full rounded-md border border-gray-300 p-2"
-                            onChange={event => setStatus(event.target.value)}
-                        >
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
-                        </select>
-                        <InputError messages={errors.status} className="mt-1" />
-                    </div>
-
-
-                    <div>
-                        <Label htmlFor="category">Category</Label>
-                        <Select
-                            value={categoryId}
-                            onValueChange={(value) => setCategoryId(value)}
-                        >
-                            <SelectTrigger className="w-full mt-2">
-                                <SelectValue placeholder="Select a category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Categories</SelectLabel>
-                                    {categories.map(category => (
-                                        <SelectItem key={category.id} value={category.id.toString()}>
-                                            {category.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                        <InputError messages={errors.category_id} className="mt-1" />
-                    </div>
-
-                    <div>
-                        <div>
-                            <div className="flex items-center space-x-2 py-6">
-                                <Checkbox
-                                    id="isFeatured"
-                                    checked={isFeatured}
-                                    onCheckedChange={setIsFeatured}
-                                />
-                                <label
-                                    htmlFor="isFeatured"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Featured Post
-                                </label>
+                                <div>
+                                    <Label htmlFor="excerpt">Excerpt</Label>
+                                    <Textarea
+                                        id="excerpt"
+                                        value={excerpt}
+                                        className="mt-2"
+                                        rows={3}
+                                        onChange={event => setExcerpt(event.target.value)}
+                                        required
+                                    />
+                                    <InputError messages={errors.excerpt} className="mt-1" />
+                                </div>
                             </div>
                         </div>
 
-                        <div>
-                            <Label htmlFor="coverImage">Cover Image</Label>
-                            <Input
-                                id="coverImage"
-                                type="file"
-                                className="block mt-2 w-full"
-                                onChange={handleImageChange}
-                                accept="image/*"
-                            />
-                            {(imagePreview || existingImage) && (
-                                <div className="mt-2">
-                                    <Image
-                                        src={imagePreview || existingImage}
-                                        alt="Preview"
-                                        width={200}
-                                        height={200}
-                                        className="rounded-md object-cover"
-                                        unoptimized
-                                    />
-                                </div>
-                            )}
-                            <InputError messages={errors.cover_image} className="mt-1" />
+                        <div className="rounded-lg border bg-card p-6">
+                            <Label htmlFor="content">Content</Label>
+                            <div className="mt-2">
+                                <TipTapEditor content={content} onChange={setContent} />
+                            </div>
+                            <InputError messages={errors.content} className="mt-1" />
                         </div>
                     </div>
 
-                    <div className="flex justify-end space-x-4">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => router.push("/dashboard/posts")}
-                        >
-                            Cancel
-                        </Button>
-                        <Button type="submit" disabled={loading}>
-                            {loading ? "Saving..." : "Save"}
-                        </Button>
+                    {/* Sidebar - Takes 1 column */}
+                    <div className="space-y-6">
+                        <div className="rounded-lg border bg-card p-6">
+                            <h3 className="mb-4 text-lg font-medium">Publishing Options</h3>
+                            <div className="space-y-4">
+                                <div>
+                                    <Label htmlFor="status">Status</Label>
+                                    <Select value={status} onValueChange={setStatus}>
+                                        <SelectTrigger className="mt-2 w-full">
+                                            <SelectValue placeholder="Select status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="draft">Draft</SelectItem>
+                                            <SelectItem value="published">Published</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError messages={errors.status} className="mt-1" />
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="category">Category</Label>
+                                    <Select value={categoryId} onValueChange={setCategoryId}>
+                                        <SelectTrigger className="mt-2 w-full">
+                                            <SelectValue placeholder="Select a category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Categories</SelectLabel>
+                                                {categories.map(category => (
+                                                    <SelectItem key={category.id} value={category.id.toString()}>
+                                                        {category.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError messages={errors.category_id} className="mt-1" />
+                                </div>
+
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="isFeatured"
+                                        checked={isFeatured}
+                                        onCheckedChange={setIsFeatured}
+                                    />
+                                    <Label htmlFor="isFeatured">Featured Post</Label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="rounded-lg border bg-card p-6">
+                            <h3 className="mb-4 text-lg font-medium">Cover Image</h3>
+                            <div className="space-y-4">
+                                <Input
+                                    id="coverImage"
+                                    type="file"
+                                    onChange={handleImageChange}
+                                    accept="image/*"
+                                />
+                                {(imagePreview || existingImage) && (
+                                    <div className="mt-2 overflow-hidden rounded-md border">
+                                        <Image
+                                            src={imagePreview || existingImage}
+                                            alt="Preview"
+                                            width={400}
+                                            height={200}
+                                            className="h-[200px] w-full object-cover"
+                                            unoptimized
+                                        />
+                                    </div>
+                                )}
+                                <InputError messages={errors.cover_image} className="mt-1" />
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     );
 }
