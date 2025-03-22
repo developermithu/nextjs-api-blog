@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, Clock } from 'lucide-react';
+import { formatDistance } from 'date-fns';
 
 export async function generateMetadata({ params }) {
     const { slug } = await params;
@@ -43,6 +44,12 @@ export default async function PostPage({ params }) {
         const { slug } = await params;
         const post = await getPost(slug);
 
+        // Format dates
+        const createdDate = new Date(post.created_at);
+        const updatedDate = new Date(post.updated_at);
+        const timeAgo = formatDistance(createdDate, new Date(), { addSuffix: true });
+        const lastUpdated = formatDistance(updatedDate, new Date(), { addSuffix: true });
+
         return (
             <>
                 <Header />
@@ -54,15 +61,20 @@ export default async function PostPage({ params }) {
                             <h1 className="text-4xl font-bold tracking-tight mb-4 md:text-5xl">{post.title}</h1>
                             <p className="text-xl text-muted-foreground mb-6">{post.excerpt}</p>
                             <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-                                <div className="flex items-center">
+                                <div className="flex items-center" title={createdDate.toLocaleDateString()}>
                                     <Calendar className="mr-1 h-4 w-4" />
-                                    {post.created_at}
+                                    {timeAgo}
                                 </div>
                                 <div className="flex items-center">
                                     <Clock className="mr-1 h-4 w-4" />
-                                    {post.reading_time_in_min} min reads time
+                                    {post.reading_time_in_min} min read
                                 </div>
                             </div>
+                            {post.updated_at !== post.created_at && (
+                                <div className="mt-2 text-sm text-muted-foreground">
+                                    Last updated {lastUpdated}
+                                </div>
+                            )}
                         </div>
 
                         <div className="relative aspect-video mb-10 overflow-hidden rounded-lg">
