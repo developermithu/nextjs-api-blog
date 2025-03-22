@@ -2,7 +2,7 @@ import axios from '../axios';
 
 export async function getPosts(page = 1, perPage = 20) {
     try {
-        const response = await axios.get(`/api/posts?page=${page}&per_page=${perPage}`);
+        const response = await axios.get(`/api/posts?page=${page}&per_page=${perPage}&status=published`);
         return response.data;
     } catch (error) {
         console.error('Error fetching posts:', error);
@@ -25,6 +25,7 @@ export async function getFeaturedPost() {
         const response = await axios.get('/api/posts', {
             params: {
                 is_featured: true,
+                status: 'published',
                 limit: 1,
             },
         });
