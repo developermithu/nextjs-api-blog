@@ -14,15 +14,20 @@ import TrashFilter from './_components/TrashFilter';
 import { useAuth } from '@/hooks/auth';
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export default function PostContent() {
     const { isAdmin } = useAuth();
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('all');
-    const [status, setStatus] = useState('all'); 
+    const [status, setStatus] = useState('all');
+    const [search, setSearch] = useState('');
+    const debouncedSearch = useDebounce(search, 500);
 
     const { data, error, isLoading } = useSWR(
-        `/api/posts?page=${page}&filter=${filter}&status=${status}`,
+        `/api/posts?page=${page}&filter=${filter}&status=${status}&search=${debouncedSearch}`,
         getPosts
     );
     const posts = data?.data || [];
@@ -85,6 +90,17 @@ export default function PostContent() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-col gap-4 md:flex-row md:items-center mb-6">
+                        <div className="flex-1 md:max-w-sm">
+                            <div className="relative">
+                                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                                <Input
+                                    placeholder="Search posts..."
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    className="pl-8"
+                                />
+                            </div>
+                        </div>
                         <TrashFilter
                             filter={filter}
                             onFilterChange={setFilter}
