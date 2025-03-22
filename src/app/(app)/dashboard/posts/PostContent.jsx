@@ -2,9 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { deletePost, getPosts, restorePost, forceDeletePost } from '@/services/posts';
-import { Plus } from 'lucide-react';
+import { Plus, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import Head from 'next/head';
 import { toast } from 'sonner';
 import useSWR, { mutate } from 'swr';
 import { useState } from 'react';
@@ -14,6 +13,7 @@ import StatusFilter from './_components/StatusFilter';
 import TrashFilter from './_components/TrashFilter';
 import { useAuth } from '@/hooks/auth';
 import { redirect } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function PostContent() {
     const { isAdmin } = useAuth();
@@ -65,54 +65,73 @@ export default function PostContent() {
     }
 
     return (
-        <>
-            <Head>
-                <title>Posts Management - Blog Admin</title>
-                <meta name="description" content="Manage your blog posts - create, edit, delete, and restore posts." />
-            </Head>
-
-            <div className="p-6">
-                <div className="mb-6 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <h1 className="text-2xl font-bold">Posts</h1>
+        <div className="space-y-6 p-4 md:p-6">
+            <Card>
+                <CardHeader className="space-y-1">
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <CardTitle className="text-2xl">Posts Management</CardTitle>
+                            <p className="text-sm text-muted-foreground">
+                                Create, edit, and manage your blog posts
+                            </p>
+                        </div>
+                        <Button asChild>
+                            <Link href="/dashboard/posts/create">
+                                <Plus className="mr-2 h-4 w-4" />
+                                New Post
+                            </Link>
+                        </Button>
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center mb-6">
                         <TrashFilter
                             filter={filter}
                             onFilterChange={setFilter}
                         />
-
                         <StatusFilter
                             status={status}
                             onStatusChange={setStatus}
                         />
                     </div>
 
-                    <Button asChild>
-                        <Link href="/dashboard/posts/create">
-                            <Plus className="h-4 w-4" />
-                            New Post
-                        </Link>
-                    </Button>
-                </div>
-
-                {isLoading ? (
-                    <div className="py-8 text-center">Loading...</div>
-                ) : (
-                    <>
-                        <PostsTable
-                            posts={posts}
-                            onDelete={handleDelete}
-                            onRestore={handleRestore}
-                            onForceDelete={handleForceDelete}
-                            showTrashed={filter === 'trash'}
-                        />
-                        <Pagination
-                            pagination={pagination}
-                            page={page}
-                            setPage={setPage}
-                        />
-                    </>
-                )}
-            </div>
-        </>
+                    {isLoading ? (
+                        <div className="flex items-center justify-center py-8">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : error ? (
+                        <div className="rounded-lg bg-destructive/15 p-4 text-center text-destructive">
+                            Failed to load posts. Please try again.
+                        </div>
+                    ) : posts.length === 0 ? (
+                        <div className="rounded-lg bg-muted p-8 text-center">
+                            <p className="text-muted-foreground">No posts found.</p>
+                            {filter === 'trash' && (
+                                <p className="mt-2 text-sm text-muted-foreground">
+                                    The trash is empty.
+                                </p>
+                            )}
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
+                            <div className="rounded-lg border">
+                                <PostsTable
+                                    posts={posts}
+                                    onDelete={handleDelete}
+                                    onRestore={handleRestore}
+                                    onForceDelete={handleForceDelete}
+                                    showTrashed={filter === 'trash'}
+                                />
+                            </div>
+                            <Pagination
+                                pagination={pagination}
+                                page={page}
+                                setPage={setPage}
+                            />
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+        </div>
     );
 }
