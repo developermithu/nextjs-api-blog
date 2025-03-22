@@ -11,13 +11,12 @@ A minimalist seo friendly blog application built with **Next.js** and **Laravel 
 - 🔄 Real-time data updates with SWR
 - 📱 Responsive design
 
-## Prerequisites
-
-- Node.js 18.x or later
-- npm or yarn
-- Laravel backend server running
-
 ## Installation
+
+Make sure you have the following setup:
+
+**Fronend URL** = http://localhost:3000
+**Backend URL** = http://localhost:8000
 
 1. Clone the repository:
    
@@ -43,6 +42,8 @@ NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 ```bash
 npm run dev or bun dev
 ```
+
+You can explicitly set the host and port by running `npm run dev --hostname=localhost --port=3000` if its run on different port and host.
 
 5. Open `http://localhost:3000` in your browser to view the application.
 
