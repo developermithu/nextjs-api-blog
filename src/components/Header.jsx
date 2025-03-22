@@ -2,56 +2,85 @@
 
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
-
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useAuth } from '@/hooks/auth';
+import { SidebarNavigation } from './SidebarNavigation';
 
 export function Header() {
-    const { user } = useAuth({ middleware: 'guest' })
+    const { user } = useAuth({ middleware: 'guest' });
+    const pathname = usePathname();
+
+    const isActive = (path) => pathname === path;
+
+    const navLinks = [
+        { href: '/', label: 'Home' },
+        { href: '/blog', label: 'Blog' },
+        { href: '/about', label: 'About' },
+    ];
 
     return (
-        <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="container flex h-16 items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <Sheet>
-                        <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon" className="md:hidden">
-                                <Menu className="h-5 w-5" />
-                                <span className="sr-only">Toggle menu</span>
-                            </Button>
-                        </SheetTrigger>
-                        <SheetContent side="left" className="pr-0">
-                            <MobileNav />
-                        </SheetContent>
-                    </Sheet>
-                    <Link href="/" className="text-xl font-bold">
-                        Blog
-                    </Link>
-                </div>
-                <nav className="hidden items-center gap-6 md:flex">
-                    <Link href="/" className="hover:text-primary text-sm font-medium transition-colors">
-                        Home
-                    </Link>
-                    <Link href="/blog" className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors">
-                        Blog
-                    </Link>
-                    <Link href="/about" className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors">
-                        About
-                    </Link>
-                </nav>
-                <div className="flex items-center gap-2">
-                    <nav className="flex items-center gap-2">
-                        {user ?
+        <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
+            <div className="container mx-auto px-4">
+                <div className="flex h-16 items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Sheet>
+                            <SheetTrigger asChild>
+                                <Button variant="ghost" size="icon" className="md:hidden">
+                                    <Menu className="h-5 w-5" />
+                                    <span className="sr-only">Toggle menu</span>
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="left" className="w-[300px] p-0">
+                                <SidebarNavigation user={user} currentPath={pathname} />
+                            </SheetContent>
+                        </Sheet>
+                        <Link href="/" className="text-xl font-bold">
+                            Blog
+                        </Link>
+                    </div>
+                    <nav className="hidden items-center gap-6 md:flex">
+                        {navLinks.map((link) => (
                             <Link
-                                href="/dashboard"
-                                className="text-muted-foreground hover:text-primary hidden text-sm font-medium transition-colors md:inline-block"
-                            >Dashboard</Link>
-                            : (
+                                key={link.href}
+                                href={link.href}
+                                className={cn(
+                                    "text-sm font-medium transition-colors",
+                                    isActive(link.href)
+                                        ? "text-primary font-semibold"
+                                        : "text-muted-foreground hover:text-primary"
+                                )}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </nav>
+                    <div className="flex items-center gap-2">
+                        <nav className="flex items-center gap-2">
+                            {user ? (
+                                <Link
+                                    href="/dashboard"
+                                    className={cn(
+                                        "hidden text-sm font-medium transition-colors md:inline-block",
+                                        isActive('/dashboard')
+                                            ? "text-primary font-semibold"
+                                            : "text-muted-foreground hover:text-primary"
+                                    )}
+                                >
+                                    Dashboard
+                                </Link>
+                            ) : (
                                 <>
                                     <Link
                                         href="/login"
-                                        className="text-muted-foreground hover:text-primary hidden text-sm font-medium transition-colors md:inline-block"
+                                        className={cn(
+                                            "hidden text-sm font-medium transition-colors md:inline-block",
+                                            isActive('/login')
+                                                ? "text-primary font-semibold"
+                                                : "text-muted-foreground hover:text-primary"
+                                        )}
                                     >
                                         Login
                                     </Link>
@@ -59,33 +88,11 @@ export function Header() {
                                         <Link href="/register">Sign Up</Link>
                                     </Button>
                                 </>
-                            )
-                        }
-                    </nav>
+                            )}
+                        </nav>
+                    </div>
                 </div>
             </div>
         </header>
-    );
-}
-
-function MobileNav() {
-    return (
-        <div className="flex flex-col gap-4 py-4 container mx-auto px-4 sm:px-6 lg:px-8">
-            <Link href="/" className="hover:text-primary text-sm font-medium transition-colors">
-                Home
-            </Link>
-            <Link href="/blog" className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors">
-                Blog
-            </Link>
-            <Link href="/about" className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors">
-                About
-            </Link>
-            <Link href="/login" className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors">
-                Login
-            </Link>
-            <Link href="/register" className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors">
-                Sign Up
-            </Link>
-        </div>
     );
 }
