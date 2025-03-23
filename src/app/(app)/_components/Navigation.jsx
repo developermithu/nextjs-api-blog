@@ -35,11 +35,19 @@ const Navigation = ({ user, isAdmin }) => {
                             </NavLink>
 
                             {isAdmin && (
-                                <NavLink
-                                    href="/dashboard/posts"
-                                    active={usePathname() === '/dashboard/posts'}>
-                                    Posts
-                                </NavLink>
+                                <>
+                                    <NavLink
+                                        href="/dashboard/posts"
+                                        active={usePathname() === '/dashboard/posts'}>
+                                        Posts
+                                    </NavLink>
+
+                                    <NavLink
+                                        href="/dashboard/categories"
+                                        active={usePathname() === '/dashboard/categories'}>
+                                        Categories
+                                    </NavLink>
+                                </>
                             )}
                         </div>
                     </div>
@@ -118,11 +126,19 @@ const Navigation = ({ user, isAdmin }) => {
                         </ResponsiveNavLink>
 
                         {isAdmin && (
-                            <ResponsiveNavLink
-                                href="/dashboard/posts"
-                                active={usePathname() === '/dashboard/posts'}>
-                                Posts
-                            </ResponsiveNavLink>
+                            <>
+                                <ResponsiveNavLink
+                                    href="/dashboard/posts"
+                                    active={usePathname() === '/dashboard/posts'}>
+                                    Posts
+                                </ResponsiveNavLink>
+
+                                <ResponsiveNavLink
+                                    href="/dashboard/categories"
+                                    active={usePathname() === '/dashboard/categories'}>
+                                    Categories
+                                </ResponsiveNavLink>
+                            </>
                         )}
                     </div>
 
