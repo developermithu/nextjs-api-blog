@@ -1,12 +1,12 @@
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { PostCard } from '@/app/blog/_components/PostCard';
-import { FeaturedPost } from '@/app/blog/_components/FeaturedPost';
 import { Button } from '@/components/ui/button';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { getFeaturedPost, getPosts } from '@/lib/api/posts';
 import Loading from './loading';
+import { FeaturedPost } from './(main)/blog/_components/FeaturedPost';
+import { PostCard } from './(main)/blog/_components/PostCard';
 
 export const metadata = {
     title: 'Minimalist Blog - Next.js, and Laravel Rest API',

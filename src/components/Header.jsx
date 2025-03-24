@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useAuth } from '@/hooks/auth';
 import { SidebarNavigation } from './SidebarNavigation';
+import { useAuth } from '@/hooks/auth';
 
 export function Header() {
     const { user } = useAuth({ middleware: 'guest' });

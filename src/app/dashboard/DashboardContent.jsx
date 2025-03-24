@@ -3,7 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/auth';
 import { Loader2 } from 'lucide-react';
-import Head from 'next/head';
 
 export default function DashboardContent() {
   const { user, isAdmin, isLoading } = useAuth();
@@ -18,10 +17,6 @@ export default function DashboardContent() {
 
   return (
     <>
-      <Head>
-        <title>Dashboard - Blog</title>
-      </Head>
-
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">Welcome, {user?.name}!</h1>
 

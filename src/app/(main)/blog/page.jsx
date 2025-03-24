@@ -1,8 +1,8 @@
-import { PostCard } from '@/app/blog/_components/PostCard';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { getPosts } from '@/lib/api/posts';
 import Loading from './loading';
+import { PostCard } from './_components/PostCard';
 
 export const metadata = {
     title: 'Blog - All Articles',
