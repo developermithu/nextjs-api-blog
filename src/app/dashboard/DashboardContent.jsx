@@ -1,11 +1,11 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/auth';
 import { Loader2 } from 'lucide-react';
+import UserProfile from './_components/UserProfile';
 
 export default function DashboardContent() {
-  const { user, isAdmin, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
 
   if (isLoading) {
     return (
@@ -17,32 +17,10 @@ export default function DashboardContent() {
 
   return (
     <>
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Welcome, {user?.name}!</h1>
+      <div className="p-6 space-y-8">
+        <h1 className="text-2xl font-bold">Welcome, {user?.name}!</h1>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {isAdmin ? (
-            <>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Posts Management</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>Manage your blog posts, including drafts and published content.</p>
-                </CardContent>
-              </Card>
-            </>
-          ) : (
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Posts</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>View the latest published posts on our blog.</p>
-              </CardContent>
-            </Card>
-          )}
-        </div>
+        <UserProfile />
       </div>
     </>
   );
