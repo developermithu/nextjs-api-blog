@@ -7,37 +7,11 @@ import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, Clock } from 'lucide-react';
 import { formatDistance } from 'date-fns';
+import SharePost from './_components/SharePost';
+import { Toaster } from 'sonner';
 
-export async function generateMetadata({ params }) {
-    const { slug } = await params;
-    const post = await getPost(slug);
-
-    return {
-        title: `${post.title} - Blog`,
-        description: post.excerpt || post.content.substring(0, 160),
-        openGraph: {
-            title: post.title,
-            description: post.excerpt || post.content.substring(0, 160),
-            type: 'article',
-            publishedTime: post.created_at,
-            authors: [post.author?.name],
-            images: post.image_url ? [
-                {
-                    url: post.image_url,
-                    width: 1200,
-                    height: 630,
-                    alt: post.title,
-                }
-            ] : [],
-        },
-        twitter: {
-            card: 'summary_large_image',
-            title: post.title,
-            description: post.excerpt || post.content.substring(0, 160),
-            images: post.image_url ? [post.image_url] : [],
-        },
-    };
-}
+// Page Metadata for SEO
+export { generateMetadata } from './metadata';
 
 export default async function PostPage({ params }) {
     try {
@@ -86,6 +60,11 @@ export default async function PostPage({ params }) {
                             dangerouslySetInnerHTML={{ __html: post.content }}
                         />
 
+                        <SharePost 
+                            title={post.title}
+                            url={typeof window !== 'undefined' ? window.location.href : `${process.env.NEXT_PUBLIC_APP_URL}/blog/${post.slug}`}
+                        />
+
                         <div className="border-t pt-8">
                             <div className="flex items-center gap-4">
                                 <Avatar className="h-12 w-12">
@@ -100,6 +79,8 @@ export default async function PostPage({ params }) {
                         </div>
                     </div>
                 </article>
+
+                <Toaster position="top-center" richColors theme="light" />
 
                 <Footer />
             </>
