@@ -83,7 +83,7 @@ export default function PostsTable({ posts, onDelete, onRestore, onForceDelete, 
                                         <>
                                             <DropdownMenuItem>
                                                 <Pencil className="h-4 w-4 mr-2" />
-                                                <Link href={`/dashboard/posts/${post.slug}/edit`}>
+                                                <Link href={`/dashboard/posts/${post.slug}/edit`} className="inline-block w-full">
                                                     Edit
                                                 </Link>
                                             </DropdownMenuItem>

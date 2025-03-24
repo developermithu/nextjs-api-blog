@@ -92,8 +92,10 @@ export default function EditPostPage({ params }) {
             formData.append('excerpt', excerpt);
             formData.append('content', content);
             formData.append('status', status);
-            formData.append('category_id', categoryId);
-            formData.append('is_featured', isFeatured ? '1' : '0'); // Fix boolean value
+            if (categoryId) {
+                formData.append('category_id', categoryId);
+            }
+            formData.append('is_featured', isFeatured ? '1' : '0');
             if (coverImage) {
                 formData.append('cover_image', coverImage);
             }
