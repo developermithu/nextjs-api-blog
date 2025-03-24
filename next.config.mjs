@@ -12,7 +12,7 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: 'api-blog.developermithu.com',
+                hostname: 'api-blog.laravel.cloud',
             },
             {
                 protocol: 'http',
@@ -21,10 +21,6 @@ const nextConfig = {
             {
                 protocol: 'http',
                 hostname: 'localhost',
-            },
-            {
-                protocol: 'http',
-                hostname: '127.0.0.1',
             },
         ],
         dangerouslyAllowSVG: true,

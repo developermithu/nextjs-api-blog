@@ -23,7 +23,7 @@ export default function PostsTable({ posts, onDelete, onRestore, onForceDelete, 
                 {posts.map((post) => (
                     <TableRow key={post.id} className={showTrashed ? 'bg-gray-50' : ''}>
                         <TableCell className="font-medium">
-                            <Link href={`/dashboard/posts/${post.id}`} className="hover:underline">
+                            <Link href={`/blog/${post.slug}`} className="hover:underline" target="_blank">
                                 {post.title}
                             </Link>
                         </TableCell>
