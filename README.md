@@ -67,9 +67,6 @@ The application uses **Laravel Sanctum** for authentication. The authentication 
 
 - Login/Logout functionality
 - Registration
-- Password reset
-- Email verification
-- Role-based access control
 
 ## Dependencies
 
