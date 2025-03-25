@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
         openGraph: {
             title: post.title,
             description,
-            url: `${process.env.NEXT_PUBLIC_APP_URL}`,
+            url: `${process.env.NEXT_PUBLIC_APP_URL}/blog/${post.slug}`,
             type: 'article',
             publishedTime: post.created_at,
             authors: [post.author?.name],
