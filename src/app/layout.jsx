@@ -1,12 +1,11 @@
 import { Inter } from 'next/font/google';
 import './styles/app.css';
+import { metadata } from './metadata';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata = {
-    title: 'Minimalist Blog - Next.js, and Laravel Rest API',
-    description: 'A clean and modern blog built with Next.js, Laravel, and Tailwind CSS',
-};
+// Page Metadata for SEO
+export { metadata };
 
 export default function RootLayout({ children }) {
     return (

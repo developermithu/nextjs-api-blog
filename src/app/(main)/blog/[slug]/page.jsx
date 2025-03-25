@@ -62,7 +62,7 @@ export default async function PostPage({ params }) {
 
                         <SharePost 
                             title={post.title}
-                            url={typeof window !== 'undefined' ? window.location.href : `${process.env.NEXT_PUBLIC_APP_URL}/blog/${post.slug}`}
+                            url={`${process.env.NEXT_PUBLIC_APP_URL}/blog/${post.slug}`}
                         />
 
                         <div className="border-t pt-8">
