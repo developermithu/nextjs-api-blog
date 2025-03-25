@@ -2,14 +2,14 @@
 
 import { useAuth } from '@/hooks/auth'
 import Navigation from './_components/Navigation'
-import Loading from './_components/Loading'
 import { Toaster } from '@/components/ui/sonner'
+import { redirect } from 'next/navigation'
 
 const AppLayout = ({ children }) => {
     const { user, isAdmin } = useAuth({ middleware: 'auth' })
 
     if (!user) {
-        return <Loading />
+        redirect('/login')
     }
 
     return (

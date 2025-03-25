@@ -92,7 +92,7 @@ export default function Register() {
                 <div className="flex items-center justify-between">
                     <div className="text-sm">
                         <Link
-                            href="/auth2/login"
+                            href="/login"
                             className="font-medium text-blue-600 hover:text-blue-500">
                             Already have an account?
                         </Link>
