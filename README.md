@@ -1,4 +1,4 @@
-# Blog Frontend
+# Next.js + Laravel Rest API
 
 A minimalist seo friendly blog application built with **Next.js** and **Laravel REST API**.
 
@@ -12,11 +12,6 @@ A minimalist seo friendly blog application built with **Next.js** and **Laravel 
 - 📱 Responsive design
 
 ## Installation
-
-Make sure you have the following setup:
-
-**Fronend URL** = http://localhost:3000
-**Backend URL** = http://localhost:8000
 
 1. Clone the repository:
    
@@ -34,6 +29,7 @@ npm install or bun install
 3. Create a `.env.local` file in the root directory and add the following content:
    
 ```bash
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 ```
 
@@ -43,38 +39,56 @@ NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 npm run dev or bun dev
 ```
 
-You can explicitly set the host and port by running `npm run dev --hostname=localhost --port=3000` if its run on different port and host.
-
 5. Open `http://localhost:3000` in your browser to view the application.
 
+<!-- dummy login credentials -->
+
+## Login with the following credentials:
+
+
+```bash
+# Admin Info:
+Email: admin@gmail.com
+Password: admin
+
+# User Info:
+Email: user@gmail.com
+Password: user
+```
 
 ## Project Structure
 
-```
-nextjs-api-blog/
+```nextjs-api-blog/
 ├── src/
-│   ├── app/           # Next.js app router pages
-│   ├── components/    # Reusable components
-│   ├── hooks/         # Custom React hooks
-│   ├── lib/          # Utilities and configurations
-│   ├── services/     # API service functions
-│   └── styles/       # Global styles
+│   ├── app/
+│   │   ├── (auth)/              # Authentication routes
+│   │   ├── (main)/              # Public routes
+│   │   ├── dashboard/           # Protected dashboard routes
+│   │   ├── styles/              # Global styles
+│   │   ├── layout.jsx           # Root layout
+│   │   └── page.jsx             # Home page
+│   ├── components/              # Reusable components
+│   ├── hooks/                   # Custom React hooks
+│   ├── lib/                     # Utilities and configurations
+│   └── services/                # API service functions
 ```
 
 ## Authentication
 
 The application uses **Laravel Sanctum** for authentication. The authentication flow is handled through the `useAuth` hook, which provides:
 
-- Login/Logout functionality
-- Registration
+- **Login**, **Register** and **Logout** functionality
 
 ## Dependencies
 
-Key dependencies used in this project:
+Key dependencies used in this project: 
 
-- Next.js 15 - React framework
-- Tailwind CSS V4 - Utility-first CSS framework
-- SWR - Data fetching and caching
-- Axios - HTTP client
-- Lucide React - Icon library
-- Shadcn UI - UI components library
+- [Backend](https://github.com/developermithu/api-blog-laravel) - Laravel + Sanctum
+- [Next.js 15](https://nextjs.org/) - React framework
+- [Tailwind CSS V4](https://tailwindcss.com/) - Utility-first CSS framework
+- [SWR](https://swr.vercel.app/) - Data fetching and caching
+- [Axios](https://axios-http.com/) - HTTP client
+- [Lucide React](https://lucide.dev/) - Icon library
+- [Shadcn UI](https://ui.shadcn.com/) - UI components library
+
+Made with ❤️ by [developermithu](https://developermithu.com)
