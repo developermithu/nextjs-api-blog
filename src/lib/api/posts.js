@@ -26,7 +26,6 @@ export async function getFeaturedPost() {
             params: {
                 is_featured: true,
                 status: 'published',
-                limit: 1,
             },
         });
         return response.data.data[0];
